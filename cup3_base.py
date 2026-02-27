@@ -64,16 +64,27 @@ class Cup3(Problem):
     def action2(self, state):
 
         acts = []
-        cup1, cup2, cup3 = state
+        # cup1, cup2, cup3 = state
         for i in range(1, 4):
-            for j in range (3):
+            for j in range(1, 4):
                 if i != j:
-                    if state[i - 1] and state[j - 1] < max(self.H[j - 1]):
-                        acts.append(f"o {i}, {j}")
+                    if state[i - 1] > 0 and state[j - 1] < max(self.H[j - 1]):
+                        acts.append(f"o {i} {j}")
         return acts
-    
-    
-    
+
+
+    def result2(self, state, action):
+
+        from_cup = int(action.split(' ')[1])
+        to_cup = int(action.split(' ')[2])
+
+        v = min(state[from_cup - 1]), max(state[self.H[to_cup - 1]]) - state(to_cup - 1)
+        new_state = list(state)
+
+        new_state[from_cup - 1] = state[from_cup - 1] - v
+        new_state[to_cup - 1] = state[to_cup - 1] + v
+
+        return tuple(new_state)
 def main():
     c = Cup3()
     print(c.actions((5, 0, 0)))
